@@ -1,0 +1,18 @@
+{
+  "name": "keyboard-shortcuts",
+  "version": "1.0.0",
+  "description": "Easy shortcuts scripts",
+  "main": "main.js",
+  "bin": "main.js",
+  "scripts": {
+    "start": "node main"
+  },
+  "keywords": ["shortcuts"],
+  "author": "Mathieu Colmon",
+  "license": "ISC",
+  "dependencies": {
+    "iohook": "^0.6.5",
+    "keypress": "^0.2.1",
+    "tplink-smarthome-api": "^2.0.0"
+  }
+}
