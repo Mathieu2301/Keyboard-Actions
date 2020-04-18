@@ -7,7 +7,9 @@
   "scripts": {
     "start": "node main"
   },
-  "keywords": ["shortcuts"],
+  "keywords": [
+    "shortcuts"
+  ],
   "author": "Mathieu Colmon",
   "license": "ISC",
   "dependencies": {
