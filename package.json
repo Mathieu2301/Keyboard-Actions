@@ -13,8 +13,7 @@
   "author": "Mathieu Colmon",
   "license": "ISC",
   "dependencies": {
-    "iohook": "^0.6.5",
-    "keypress": "^0.2.1",
-    "tplink-smarthome-api": "^2.0.0"
+    "focusrite": "^1.0.1",
+    "iohook": "^0.6.6"
   }
 }
