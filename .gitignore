@@ -4,5 +4,5 @@ node_modules/
 # package-lock.json
 package-lock.json
 
-# Modules
-modules/*
+# Miakpp credentials
+miakapp.json

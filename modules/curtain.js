@@ -1,14 +1,14 @@
 module.exports = {
   shortcuts: [
     {
-      keychar: 176, // => ')'
+      keychar: 176,
       altKey: true,
       shiftKey: true,
       ctrlKey: false,
       metaKey: false,
     },
     {
-      keychar: 43, // => '='
+      keychar: 43,
       altKey: true,
       shiftKey: true,
       ctrlKey: false,
@@ -16,8 +16,10 @@ module.exports = {
     },
   ],
   handle(e) {
-    // Handles when Shift + Alt + ')'
-    // OR 
-    // when Shift + Alt + '='
-  }
+    global.miakapp.broadcast({
+      type: 'PC_EVENT',
+      name: 'CURTAIN',
+      action: (e.keychar === 43 ? 'open' : 'close'),
+    });
+  },
 };
