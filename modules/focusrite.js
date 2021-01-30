@@ -58,8 +58,14 @@ focusrite.findServerPort((port) => {
           clientWrite(focusrite.requests.MODE_NORMAL);
           clientWrite(focusrite.requests.MODE_COLOR);
           clientWrite(focusrite.colors.RED);
+
+          clientWrite(focusrite.requests.A1_PREAMP_FALSE); // Disable
+          config.airmode = 'false';
         } else {
           clientWrite(focusrite.requests.MODE_NORMAL);
+
+          clientWrite(focusrite.requests.A1_PREAMP_TRUE); // Enable
+          config.airmode = 'true';
         }
       }
     });
