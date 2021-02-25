@@ -33,5 +33,19 @@ global.miakapp.onCallback('pc_action', (name) => {
 })
 
 global.miakapp.onEvent((e) => {
-  if (e.type === 'PC_ACTION' && actions[e.name]) actions[e.name]();
+  if (e.type !== 'PC_ACTION') return;
+
+  if (actions[e.name]) actions[e.name]();
+
+  if (e.name === 'PC_SCREEN_OFF') global.miakapp.broadcast({
+    type: 'tuya_setMode',
+    device: global.miakapp.config.desk_id,
+    value: 0,
+  });
+
+  if (e.name === 'PC_SCREEN_ON') global.miakapp.broadcast({
+    type: 'tuya_setMode',
+    device: global.miakapp.config.desk_id,
+    value: 1,
+  });
 });
