@@ -1,4 +1,5 @@
 const focusrite = require('focusrite');
+
 const clientKey = '6e9e8b6d-dbca-4936-a136-dfddfe030feb';
 
 focusrite.findServerPort((port) => {
@@ -9,22 +10,36 @@ focusrite.findServerPort((port) => {
   };
 
   focusrite.createFakeClient(port, clientKey, (onData, clientWrite) => {
+    let i = 0;
+    function changeColor() {
+      if (!config.rainbow) return;
+      let rq = focusrite.colors[Object.keys(focusrite.colors)[i += 1]];
+      if (!rq) {
+        i = 0;
+        rq = focusrite.colors[Object.keys(focusrite.colors)[i]];
+      }
+      clientWrite(rq);
+      if (config.rainbow) setTimeout(changeColor, 40);
+    }
+
     onData((data) => {
-      let airmode = data.toString().match(/id="23" value\=\"([truefals]*)\"/);
-      let instmode = data.toString().match(/id="28" value\=\"([LineInst]*)\"/);
+      const airmode = data.toString().match(/id="23" value\=\"([truefals]*)\"/);
+      const instmode = data.toString().match(/id="28" value\=\"([LineInst]*)\"/);
 
       if (airmode && config.airmode !== airmode[1]) {
-        if (config.airmode) global.miakapp.broadcast({
-          type: 'PC_EVENT',
-          name: 'CURTAIN',
-          action: (airmode[1] == 'true' ? 'open' : 'close'),
-        });
+        if (config.airmode) {
+          global.miakapp.broadcast({
+            type: 'PC_EVENT',
+            name: 'CURTAIN',
+            action: (airmode[1] === 'true' ? 'open' : 'close'),
+          });
+        }
 
-        config.airmode = airmode[1];
+        [, config.airmode] = airmode;
       }
 
       if (instmode && config.instmode !== instmode[1]) {
-        config.instmode = instmode[1];
+        [, config.instmode] = instmode;
 
         if (Date.now() - config.last_instpush < 200) {
           if (!config.rainbow) {
@@ -39,18 +54,6 @@ focusrite.findServerPort((port) => {
         } else config.last_instpush = Date.now();
       }
     });
-
-    let i = 0;
-    function changeColor() {
-      if (!config.rainbow) return;
-      let rq = focusrite.colors.fromIndex(i++);
-      if (!rq) {
-        i = 0;
-        rq = focusrite.colors.fromIndex(i);
-      }
-      clientWrite(rq);
-      if (config.rainbow) setTimeout(changeColor, 40);
-    }
 
     global.miakapp.onEvent((data) => {
       if (data.type === 'DOOR' && data.door === 'DOOR_3') {
@@ -71,8 +74,3 @@ focusrite.findServerPort((port) => {
     });
   });
 });
-
-Object.prototype.fromIndex = function(i) {
-  const keys = Object.keys(this);
-  return this[keys[i]];
-}

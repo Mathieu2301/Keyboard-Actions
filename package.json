@@ -14,7 +14,12 @@
   "license": "ISC",
   "dependencies": {
     "focusrite": "^1.0.1",
-    "iohook": "^0.6.6",
-    "miakapi": "0.0.88-TST"
+    "miakapi": "0.0.88-TST",
+    "node-direct-input": "^1.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^7.28.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.23.4"
   }
 }

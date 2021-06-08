@@ -1,13 +1,7 @@
 module.exports = {
-  shortcuts: [
-    {
-      keychar: 8,
-      altKey: true,
-      shiftKey: true,
-      ctrlKey: false,
-      metaKey: false,
-    },
-  ],
+  events: {
+    toggle: ['LEFTSHIFT', 'LEFTALT', 'BACK'],
+  },
   handle() {
     global.miakapp.broadcast({
       type: 'PC_EVENT',

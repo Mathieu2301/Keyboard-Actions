@@ -1,6 +1,6 @@
 const { spawn } = require('child_process');
-let spotify = null;
 
+let spotify = null;
 function Spotify() {
   if (spotify) spotify.kill();
   spotify = spawn(`${process.env.APPDATA}\\Spotify\\Spotify.exe`);
@@ -11,14 +11,9 @@ global.miakapp.onEvent((e) => {
 });
 
 module.exports = {
-  shortcuts: [
-    {
-      keychar: 13,
-      altKey: true,
-      shiftKey: true,
-      ctrlKey: false,
-      metaKey: false,
-    },
-  ],
+  events: {
+    restart: ['LEFTSHIFT', 'LEFTALT', 'RETURN'],
+    restart2: ['UNKNOWN', 'UNKNOWN'],
+  },
   handle: Spotify,
 };
