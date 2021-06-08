@@ -23,8 +23,8 @@ focusrite.findServerPort((port) => {
     }
 
     onData((data) => {
-      const airmode = data.toString().match(/id="23" value\=\"([truefals]*)\"/);
-      const instmode = data.toString().match(/id="28" value\=\"([LineInst]*)\"/);
+      const airmode = data.toString().match(/id="23" value="([truefals]*)"/);
+      const instmode = data.toString().match(/id="28" value="([LineInst]*)"/);
 
       if (airmode && config.airmode !== airmode[1]) {
         if (config.airmode) {
