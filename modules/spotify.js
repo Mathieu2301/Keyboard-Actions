@@ -13,7 +13,6 @@ global.miakapp.onEvent((e) => {
 module.exports = {
   events: {
     restart: ['LEFTSHIFT', 'LEFTALT', 'RETURN'],
-    restart2: ['UNKNOWN', 'UNKNOWN'],
   },
   handle: Spotify,
 };
