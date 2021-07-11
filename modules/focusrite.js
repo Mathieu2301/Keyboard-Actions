@@ -28,11 +28,7 @@ focusrite.findServerPort((port) => {
 
       if (airmode && config.airmode !== airmode[1]) {
         if (config.airmode) {
-          global.miakapp.broadcast({
-            type: 'PC_EVENT',
-            name: 'CURTAIN',
-            action: (airmode[1] === 'true' ? 'open' : 'close'),
-          });
+          global.tcpSend(`curtain:${(airmode[1] === 'true' ? 'open' : 'close')}`);
         }
 
         [, config.airmode] = airmode;
@@ -55,21 +51,19 @@ focusrite.findServerPort((port) => {
       }
     });
 
-    global.miakapp.onEvent((data) => {
-      if (data.type === 'DOOR' && data.door === 'DOOR_3') {
-        if (data.value) {
-          clientWrite(focusrite.requests.MODE_NORMAL);
-          clientWrite(focusrite.requests.MODE_COLOR);
-          clientWrite(focusrite.colors.RED);
+    global.tcpListen((packet) => {
+      if (packet === 'door:open') {
+        clientWrite(focusrite.requests.MODE_NORMAL);
+        clientWrite(focusrite.requests.MODE_COLOR);
+        clientWrite(focusrite.colors.RED);
 
-          clientWrite(focusrite.requests.A1_PREAMP_FALSE); // Disable
-          config.airmode = 'false';
-        } else {
-          clientWrite(focusrite.requests.MODE_NORMAL);
+        clientWrite(focusrite.requests.A1_PREAMP_FALSE); // Disable
+        config.airmode = 'false';
+      } else if (packet === 'door:closed') {
+        clientWrite(focusrite.requests.MODE_NORMAL);
 
-          clientWrite(focusrite.requests.A1_PREAMP_TRUE); // Enable
-          config.airmode = 'true';
-        }
+        clientWrite(focusrite.requests.A1_PREAMP_TRUE); // Enable
+        config.airmode = 'true';
       }
     });
   });

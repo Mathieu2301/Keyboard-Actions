@@ -6,14 +6,13 @@ function Spotify() {
   spotify = spawn(`${process.env.APPDATA}\\Spotify\\Spotify.exe`);
 }
 
-global.miakapp.onEvent((e) => {
-  if (e.type === 'PC_ACTION' && e.name === 'APP_SPOTIFY') Spotify();
+global.tcpListen((packet) => {
+  if (packet === 'spotify:restart') Spotify();
 });
 
 module.exports = {
   events: {
     restart: ['LEFTSHIFT', 'LEFTALT', 'RETURN'],
-    restart2: ['UNKNOWN', 'UNKNOWN'],
   },
   handle: Spotify,
 };

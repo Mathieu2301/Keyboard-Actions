@@ -4,10 +4,6 @@ module.exports = {
     close: ['LEFTSHIFT', 'LEFTALT', 'MINUS'],
   },
   handle(event) {
-    global.miakapp.broadcast({
-      type: 'PC_EVENT',
-      name: 'CURTAIN',
-      action: event, // 'open' or 'close'
-    });
+    global.tcpSend(`curtain:${event}`);
   },
 };
