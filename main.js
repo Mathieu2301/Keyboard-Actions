@@ -38,13 +38,22 @@ di.on('ndi:keysPressed', (keys) => {
   setTimeout(() => { lastPress = null; }, 200);
 });
 
-net.createServer((socket) => {
-  if (socket.remoteAddress !== '::ffff:192.168.0.33') return;
-  socket.on('data', (data) => {
-    tcpListeners.forEach((l) => l(data.toString()));
-  });
+// Connect to a gateway with TCP
 
-  global.tcpSend = ((data) => {
-    socket.write(`${data};`);
-  });
-}).listen(7777);
+const gateway = { host: '192.168.0.33', port: 7777 };
+
+const s = net.connect(gateway, () => console.log('Connected !'));
+
+global.tcpSend = ((data) => {
+  s.write(`${data};`);
+});
+
+s.on('data', (data) => {
+  tcpListeners.forEach((l) => l(data.toString()));
+});
+
+s.on('error', (err) => console.log('TCP Error', err));
+s.on('close', () => {
+  console.log('Closed, reconnecting...');
+  setTimeout(() => s.connect(gateway, () => console.log('Reconnected !')), 1000);
+});
